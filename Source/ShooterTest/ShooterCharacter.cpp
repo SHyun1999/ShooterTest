@@ -3,7 +3,7 @@
 
 #include "ShooterCharacter.h"
 #include "Gun.h"
-
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 AShooterCharacter::AShooterCharacter()
@@ -38,12 +38,14 @@ void AShooterCharacter::Tick(float DeltaTime)
 // Called to bind functionality to input
 void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
+	//AXIS
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &AShooterCharacter::MoveForward);
 	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &AShooterCharacter::LookUp);
 	PlayerInputComponent->BindAxis(TEXT("MoveSide"), this, &AShooterCharacter::MoveSide);
 	PlayerInputComponent->BindAxis(TEXT("LookSide"), this, &AShooterCharacter::LookSide);
 
+	//ACTIONS
 	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction(TEXT("Shoot"), EInputEvent::IE_Pressed, this, &AShooterCharacter::Shoot);
 }
@@ -79,7 +81,12 @@ float AShooterCharacter::TakeDamage(float DamageAmount, struct FDamageEvent cons
 	DamageToApply = FMath::Min(Health, DamageToApply);
 	Health -= DamageToApply;
 
-	UE_LOG(LogTemp, Display, TEXT("Health %f"), Health);
+	if (IsDead())
+	{
+		
+		DetachFromControllerPendingDestroy(); //disable controller
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision); //disable capsule collision
+	}
 
 	return DamageToApply;
 

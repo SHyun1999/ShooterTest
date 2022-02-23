@@ -30,12 +30,13 @@ public:
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
+	void Shoot();
+
 private:
 	void MoveForward(float AxisValue);
 	void MoveSide(float AxisValue);
 	void LookUp(float AxisValue);
 	void LookSide(float AxisValue);
-	void Shoot();
 
 	UFUNCTION(BlueprintPure)
 		bool IsDead() const;
