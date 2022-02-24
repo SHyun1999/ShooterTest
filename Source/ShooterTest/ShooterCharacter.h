@@ -32,14 +32,14 @@ public:
 
 	void Shoot();
 
+	UFUNCTION(BlueprintPure)
+		bool IsDead() const;
+
 private:
 	void MoveForward(float AxisValue);
 	void MoveSide(float AxisValue);
 	void LookUp(float AxisValue);
 	void LookSide(float AxisValue);
-
-	UFUNCTION(BlueprintPure)
-		bool IsDead() const;
 
 
 	UPROPERTY(EditDefaultsOnly)
